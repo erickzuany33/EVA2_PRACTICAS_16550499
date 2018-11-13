@@ -1,0 +1,280 @@
+MySQL Shell 8.0.12
+
+Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+
+ MySQL  SQL > \connect -c root@localhost
+The -c option is deprecated, please use --mysql or -mc instead
+Creating a Classic session to 'root@localhost'
+Please provide the password for 'root@localhost': ****
+Save password for 'root@localhost:3306'? [Y]es/[N]o/Ne[v]er (default No): y
+Fetching schema names for autocompletion... Press ^C to stop.
+Your MySQL connection id is 12
+Server version: 8.0.12 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+
+ MySQL  localhost:3306 ssl  SQL > \use eva_2
+Default schema set to `eva_2`.
+Fetching table and column names from `eva_2` for auto-completion... Press ^C to stop.
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > create tableA(id int, nombre varchar(5));
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'tableA(id int, nombre varchar(5))' at line 1
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > create table A(id int, nombre varchar(5));
+ERROR: 1050 (42S01): Table 'a' already exists
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > create table tablaA(id int, nombre varchar(5));
+Query OK, 0 rows affected (0.9707 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > create table tablaB(id int, nombre varchar(5));
+Query OK, 0 rows affected (0.4627 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > insert into tablaA values(1,'A'),(2,'B'),(3,'C'),(4,'D'),(5,'E');
+Query OK, 5 rows affected (0.2392 sec)
+
+Records: 5  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > insert into tablaB values(1,'X'),(2,'Y'),(3,'Z'),(4,'A'),(5,'B');
+Query OK, 5 rows affected (0.1472 sec)
+
+Records: 5  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from tablaa;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
+|  3 | C      |
+|  4 | D      |
+|  5 | E      |
++----+--------+
+5 rows in set (0.0009 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from tablab;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | X      |
+|  2 | Y      |
+|  3 | Z      |
+|  4 | A      |
+|  5 | B      |
++----+--------+
+5 rows in set (0.0007 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from tablaA where nombre in (select nombre tablaB);
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
+|  3 | C      |
+|  4 | D      |
+|  5 | E      |
++----+--------+
+5 rows in set (0.0187 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from tablaA where nombre in (select nombre from tablaB);
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
++----+--------+
+2 rows in set (0.0487 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from tablaA
+                                     ... inner join tablaB
+                                     ... on tablaA.nombre = tablaB.nombre;
++----+--------+----+--------+
+| id | nombre | id | nombre |
++----+--------+----+--------+
+|  1 | A      |  4 | A      |
+|  2 | B      |  5 | B      |
++----+--------+----+--------+
+2 rows in set (0.0012 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| employees          |
+| eva_1              |
+| eva_2              |
+| evaluacion_1       |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| tecnologico        |
+| world              |
++--------------------+
+11 rows in set (0.0015 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > \use sakila
+Default schema set to `sakila`.
+Fetching table and column names from `sakila` for auto-completion... Press ^C to stop.
+
+ MySQL  localhost:3306 ssl  sakila  SQL > sj¿how tables;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sj
+ MySQL  localhost:3306 ssl  sakila  SQL > show tables;
++----------------------------+
+| Tables_in_sakila           |
++----------------------------+
+| actor                      |
+| actor_info                 |
+| address                    |
+| category                   |
+| city                       |
+| country                    |
+| customer                   |
+| customer_list              |
+| film                       |
+| film_actor                 |
+| film_category              |
+| film_list                  |
+| film_text                  |
+| inventory                  |
+| language                   |
+| nicer_but_slower_film_list |
+| payment                    |
+| rental                     |
+| sales_by_film_category     |
+| sales_by_store             |
+| staff                      |
+| staff_list                 |
+| store                      |
++----------------------------+
+23 rows in set (0.0029 sec)
+
+ MySQL  localhost:3306 ssl  sakila  SQL > select count(*) from rental;
++----------+
+| count(*) |
++----------+
+|    16044 |
++----------+
+1 row in set (0.1973 sec)
+
+ MySQL  localhost:3306 ssl  sakila  SQL > select count(*) from customer;
++----------+
+| count(*) |
++----------+
+|      599 |
++----------+
+1 row in set (0.0782 sec)
+
+ MySQL  localhost:3306 ssl  sakila  SQL > desc customer;
++-------------+----------------------+------+-----+-------------------+-----------------------------+
+| Field       | Type                 | Null | Key | Default           | Extra                       |
++-------------+----------------------+------+-----+-------------------+-----------------------------+
+| customer_id | smallint(5) unsigned | NO   | PRI | NULL              | auto_increment              |
+| store_id    | tinyint(3) unsigned  | NO   | MUL | NULL              |                             |
+| first_name  | varchar(45)          | NO   |     | NULL              |                             |
+| last_name   | varchar(45)          | NO   | MUL | NULL              |                             |
+| email       | varchar(50)          | YES  |     | NULL              |                             |
+| address_id  | smallint(5) unsigned | NO   | MUL | NULL              |                             |
+| active      | tinyint(1)           | NO   |     | 1                 |                             |
+| create_date | datetime             | NO   |     | NULL              |                             |
+| last_update | timestamp            | YES  |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++-------------+----------------------+------+-----+-------------------+-----------------------------+
+9 rows in set (0.0033 sec)
+
+ MySQL  localhost:3306 ssl  sakila  SQL > desc rental;
++--------------+-----------------------+------+-----+-------------------+-----------------------------+
+| Field        | Type                  | Null | Key | Default           | Extra                       |
++--------------+-----------------------+------+-----+-------------------+-----------------------------+
+| rental_id    | int(11)               | NO   | PRI | NULL              | auto_increment              |
+| rental_date  | datetime              | NO   | MUL | NULL              |                             |
+| inventory_id | mediumint(8) unsigned | NO   | MUL | NULL              |                             |
+| customer_id  | smallint(5) unsigned  | NO   | MUL | NULL              |                             |
+| return_date  | datetime              | YES  |     | NULL              |                             |
+| staff_id     | tinyint(3) unsigned   | NO   | MUL | NULL              |                             |
+| last_update  | timestamp             | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++--------------+-----------------------+------+-----+-------------------+-----------------------------+
+7 rows in set (0.0028 sec)
+
+ MySQL  localhost:3306 ssl  sakila  SQL > select a.first_name customer a
+                                      ... inner join rental b
+                                      ... on a.custoer_id = b.customer_id;
+
+ MySQL  localhost:3306 ssl  sakila  SQL > select a.first_name customer a inner join rental b  on a.custoer_id = b.customer_id;
+
+ MySQL  localhost:3306 ssl  sakila  SQL > hk
+                                      ... ;
+
+ MySQL  localhost:3306 ssl  sakila  SQL > desc rental;
++--------------+-----------------------+------+-----+-------------------+-----------------------------+
+| Field        | Type                  | Null | Key | Default           | Extra                       |
++--------------+-----------------------+------+-----+-------------------+-----------------------------+
+| rental_id    | int(11)               | NO   | PRI | NULL              | auto_increment              |
+| rental_date  | datetime              | NO   | MUL | NULL              |                             |
+| inventory_id | mediumint(8) unsigned | NO   | MUL | NULL              |                             |
+| customer_id  | smallint(5) unsigned  | NO   | MUL | NULL              |                             |
+| return_date  | datetime              | YES  |     | NULL              |                             |
+| staff_id     | tinyint(3) unsigned   | NO   | MUL | NULL              |                             |
+| last_update  | timestamp             | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++--------------+-----------------------+------+-----+-------------------+-----------------------------+
+7 rows in set (0.0032 sec)
+
+ MySQL  localhost:3306 ssl  sakila  SQL > select customer_id from rental limit 10];
+
+ MySQL  localhost:3306 ssl  sakila  SQL > select customer_id from rental limit 10;
++-------------+
+| customer_id |
++-------------+
+|           1 |
+|           1 |
+|           1 |
+|           1 |
+|           1 |
+|           1 |
+|           1 |
+|           1 |
+|           1 |
+|           1 |
++-------------+
+10 rows in set (0.0276 sec)
+
+ MySQL  localhost:3306 ssl  sakila  SQL > select distinct(customer_id) from rental limit 10;
++-------------+
+| customer_id |
++-------------+
+|           1 |
+|           2 |
+|           3 |
+|           4 |
+|           5 |
+|           6 |
+|           7 |
+|           8 |
+|           9 |
+|          10 |
++-------------+
+10 rows in set (0.0538 sec)
+
+ MySQL  localhost:3306 ssl  sakila  SQL > select first_name, last_name from customer where customer_id = 588;
++------------+-----------+
+| first_name | last_name |
++------------+-----------+
+| MARION     | OCAMPO    |
++------------+-----------+
+1 row in set (0.0010 sec)
+
+ MySQL  localhost:3306 ssl  sakila  SQL > select from distinct(a.customer_id), a.first_name, a.last_name from
+                                      ... customer a inner join rental b
+                                      ... on a.customer_id = b.customer_id;
+
+ MySQL  localhost:3306 ssl  sakila  SQL > select from distinct(a.customer_id), a.first_name, a.last_name from customer a inner join rental b on a.customer_id = b.customer_id;
+
+ MySQL  localhost:3306 ssl  sakila  SQL >

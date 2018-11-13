@@ -1,0 +1,75 @@
+select a.customerid, sum(c.unitprice * c.quantity) as subtotal
+
+	
+from customers a
+    
+    
+inner join orders b on a.customerid = b.customerid
+    
+    
+inner join order_details c on b.orderid = c.orderid
+
+        
+group by  a.customerid
+
+        
+order by subtotal desc
+
+        
+limit 1;
+
+select a.customerid, sum(c.unitprice * c.quantity) as subtotal
+
+	
+from customers a
+    
+    
+inner join orders b on a.customerid = b.customerid
+    
+    
+inner join order_details c on b.orderid = c.orderid
+
+        
+group by  a.customerid
+
+        
+order by subtotal asc
+    
+    
+limit 1;
+
+select a.productname, sum(b.quantity) as total
+
+from products a
+
+inner join order_details b on a.productid = b.productid
+
+group by  a.productid
+
+order by total desc
+
+limit 1;
+
+select a.productname, sum(b.quantity * b.unitprice) as total
+
+from products a
+
+inner join order_details b on a.productid = b.productid
+
+group by  a.productid
+
+order by total desc
+
+limit 1;
+
+select a.productname, sum(b.quantity * b.unitprice) as total
+
+from products a
+
+inner join order_details b on a.productid = b.productid
+
+group by  a.productid
+
+order by total asc
+
+limit 1;
